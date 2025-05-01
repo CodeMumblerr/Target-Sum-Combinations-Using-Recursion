@@ -1,0 +1,39 @@
+# Python program to find all unique combinations
+# of numbers that sum to a given value
+
+# Recursive helper function to explore combinations
+def findWays(nums, remaining, path, results, i):
+    # If exact match, store the current path
+    if remaining == 0:
+        results.append(list(path))
+        return
+
+    # Exit if sum goes negative or all elements are tried
+    if remaining < 0 or i >= len(nums):
+        return
+
+    # Include current number and stay at same index (can reuse number)
+    path.append(nums[i])
+    findWays(nums, remaining - nums[i], path, results, i)
+
+    # Backtrack and try without including current number
+    path.pop()
+    findWays(nums, remaining, path, results, i + 1)
+
+# Function to get all combinations that sum to target
+def getCombinationsToTarget(nums, targetSum):
+    nums.sort()  # Optional: sort to process smaller numbers first
+    results = []
+    findWays(nums, targetSum, [], results, 0)
+    return results
+
+# Example usage
+if __name__ == "__main__":
+    numbers = [3, 5, 7]
+    target = 10
+
+    solutions = getCombinationsToTarget(numbers, target)
+
+    print(f"Combinations that sum to {target}:")
+    for combo in solutions:
+        print(" + ".join(map(str, combo)))
